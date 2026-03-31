@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.hero-section {
+    background: linear-gradient(rgba(13, 110, 253, 0.75), rgba(13, 110, 253, 0.75)),
+                url('../images/hero-books.jpg') center center / cover no-repeat;
+    color: white;
+    padding: 100px 0;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.hero-section p {
+    font-size: 1.15rem;
+    max-width: 700px;
+}
+
+.section-title {
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #0d6efd;
+}
+
+.category-card,
+.plan-card,
+.feature-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease;
+    height: 100%;
+}
+
+.category-card:hover,
+.plan-card:hover,
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.category-card img {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.plan-price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0d6efd;
+}
+
+.footer-area {
+    background-color: #212529;
+    color: white;
+    padding: 40px 0;
+    margin-top: 50px;
+}
+
+.footer-area a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer-area a:hover {
+    text-decoration: underline;
+}
+
+.cta-box {
+    background-color: #e9f2ff;
+    border-radius: 12px;
+    padding: 30px;
+}
+
+.search-box {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.page-banner {
+    background-color: #0d6efd;
+    color: white;
+    padding: 50px 0;
+    margin-bottom: 40px;
+}
+
+.form-section {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
