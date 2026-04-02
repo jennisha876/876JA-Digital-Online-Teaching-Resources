@@ -1,3 +1,8 @@
+/* Login Form - Jennisha Smith
+this form will be used to log in registered users based on credentials stored in
+the database.
+*/
+
 <?php
 $pageTitle = '876JA Digital Online Teaching Resources | Login';
 $activePage = 'login';

@@ -1,3 +1,6 @@
+/*Registration Form - Jennisha Smith
+this will allow new users to register for an online account. The information from this form should be stored in a database.
+*/
 <?php
 $pageTitle = '876JA Digital Online Teaching Resources | Register';
 $activePage = 'registration';
