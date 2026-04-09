@@ -12,6 +12,13 @@ session_start();
 $username = '';
 $usernameErr = '';
 $passwordErr = '';
+$formErr = '';
+$resetSuccessMsg = '';
+
+// Show a one-time style message after successful password reset.
+if (($_GET['reset'] ?? '') === 'success') {
+    $resetSuccessMsg = 'Password updated successfully. Please log in with your new password.';
+}
 
 // Handle login submission only for POST requests.
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -29,12 +36,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $passwordErr = '*Please enter password';
     }
 
-    // If validation succeeds, store user identifier in session and redirect.
-    // htmlspecialchars is used here to ensure a safe session value.
+    // If validation succeeds, validate credentials against database and then redirect.
     if ($usernameErr === '' && $passwordErr === '') {
-        $_SESSION['username'] = htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
-        header('Location: index.php');
-        exit;
+        // Database connection settings (same as registration page).
+        $host = 'localhost';
+        $dbUser = 'root';
+        $dbPassword = '';
+        $dbName = 'teaching';
+
+        // Open database connection and validate login securely.
+        $conn = mysqli_connect($host, $dbUser, $dbPassword, $dbName);
+
+        if (!$conn) {
+            $formErr = 'Database connection failed: ' . mysqli_connect_error();
+        } else {
+            // Allow login by username or email to improve usability.
+            $sql = 'SELECT id, username, password_hash FROM users WHERE username = ? OR email = ? LIMIT 1';
+            $stmt = mysqli_prepare($conn, $sql);
+
+            if (!$stmt) {
+                $formErr = 'Unable to prepare login query: ' . mysqli_error($conn);
+            } else {
+                mysqli_stmt_bind_param($stmt, 'ss', $username, $username);
+                mysqli_stmt_execute($stmt);
+                $result = mysqli_stmt_get_result($stmt);
+                $user = $result ? mysqli_fetch_assoc($result) : null;
+
+                // Verify entered password against stored hash.
+                if ($user && password_verify($password, $user['password_hash'])) {
+                    // Store only safe, minimal session information.
+                    $_SESSION['user_id'] = (int) $user['id'];
+                    $_SESSION['username'] = $user['username'];
+
+                    header('Location: index.php');
+                    exit;
+                }
+
+                // Keep response generic to avoid exposing account existence.
+                $formErr = 'Invalid username/email or password.';
+                mysqli_stmt_close($stmt);
+            }
+
+            mysqli_close($conn);
+        }
     }
 }
 ?>
@@ -64,8 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <li class="nav-item"><a class="nav-link" href="pricing.php">Pricing</a></li>
                 <li class="nav-item"><a class="nav-link" href="payment.php">Payment</a></li>
                 <li class="nav-item"><a class="nav-link" href="faq.php">FAQ</a></li>
-                <li class="nav-item"><a class="nav-link" href="registration.php">Register</a></li>
-                <li class="nav-item"><a class="nav-link active" href="login.php">Login</a></li>
+                <li class="nav-item"><a class="nav-login-btn active" href="login.php">Login</a></li>
             </ul>
         </div>
     </div>
@@ -84,6 +127,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="card-body registration-form-panel p-4 p-md-5">
                             <h1 class="h3 mb-3">Login</h1>
                             <p class="text-muted mb-4">Access your teaching resources account.</p>
+                            <?php if ($resetSuccessMsg !== ''): ?>
+                                <!-- Post-reset confirmation message. -->
+                                <div class="alert alert-success mb-3" role="alert"><?php echo htmlspecialchars($resetSuccessMsg, ENT_QUOTES, 'UTF-8'); ?></div>
+                            <?php endif; ?>
+                            <?php if ($formErr !== ''): ?>
+                                <!-- Form-level login error shown when credentials or database checks fail. -->
+                                <div class="alert alert-danger mb-3" role="alert"><?php echo htmlspecialchars($formErr, ENT_QUOTES, 'UTF-8'); ?></div>
+                            <?php endif; ?>
 
                             <!-- Login form posts back to this same page for PHP validation -->
                             <form method="post" action="login.php" novalidate>
@@ -116,6 +167,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <p class="text-danger small mt-2 mb-0"><?php echo htmlspecialchars($passwordErr, ENT_QUOTES, 'UTF-8'); ?></p>
                                     <?php endif; ?>
                                 </div>
+
+                                <!-- Forgot password entry point for password reset flow. -->
+                                <p class="small mb-4"><a href="forgot-password.php">Forgot password?</a></p>
 
                                 <button type="submit" name="submit" class="btn btn-primary w-100">Login</button>
                             </form>

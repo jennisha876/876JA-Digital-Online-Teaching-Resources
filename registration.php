@@ -200,8 +200,7 @@ function alertBlock($value, $type)
                 <li class="nav-item"><a class="nav-link" href="pricing.php">Pricing</a></li>
                 <li class="nav-item"><a class="nav-link" href="payment.php">Payment</a></li>
                 <li class="nav-item"><a class="nav-link" href="faq.php">FAQ</a></li>
-                <li class="nav-item"><a class="nav-link active" href="registration.php">Register</a></li>
-                <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
+                <li class="nav-item"><a class="nav-login-btn" href="login.php">Login</a></li>
             </ul>
         </div>
     </div>

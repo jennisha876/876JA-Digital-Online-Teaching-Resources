@@ -28,8 +28,7 @@ function navActive($page, $activePage) { return $page === $activePage ? ' active
                 <li class="nav-item"><a class="nav-link<?php echo navActive('pricing', $activePage); ?>" href="pricing.php">Pricing</a></li>
                 <li class="nav-item"><a class="nav-link<?php echo navActive('payment', $activePage); ?>" href="payment.php">Payment</a></li>
                 <li class="nav-item"><a class="nav-link<?php echo navActive('faq', $activePage); ?>" href="faq.php">FAQ</a></li>
-                <li class="nav-item"><a class="nav-link<?php echo navActive('registration', $activePage); ?>" href="registration.php">Register</a></li>
-                <li class="nav-item"><a class="nav-link<?php echo navActive('login', $activePage); ?>" href="login.php">Login</a></li>
+                <li class="nav-item"><a class="nav-login-btn" href="login.php">Login</a></li>
             </ul>
         </div>
     </div>
@@ -43,7 +42,7 @@ function navActive($page, $activePage) { return $page === $activePage ? ' active
             tutorials, worksheets, and classroom support materials across multiple subject areas.
         </p>
         <a href="library.php" class="btn btn-light btn-lg mt-3">Browse Resources</a>
-        <a href="registration.php" class="btn btn-outline-light btn-lg mt-3 ms-2">Create Account</a>
+        <a href="registration.php" class="btn btn-light btn-lg mt-3 ms-2">Create Account</a>
     </div>
 </header>
 
