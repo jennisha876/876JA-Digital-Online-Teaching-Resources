@@ -74,49 +74,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- Login content card -->
 <main class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-5">
-            <div class="card shadow-sm border-0">
-                <div class="card-body p-4 p-md-5">
-                    <h1 class="h3 mb-3">Login</h1>
-                    <p class="text-muted mb-4">Access your teaching resources account.</p>
+        <div class="col-12 col-xl-11">
+            <section class="registration-layout card border-0 shadow-sm">
+                <div class="row g-0 align-items-stretch">
+                    <div class="col-lg-6">
+                        <div class="registration-media" role="img" aria-label="Students collaborating in a warm classroom setting"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card-body registration-form-panel p-4 p-md-5">
+                            <h1 class="h3 mb-3">Login</h1>
+                            <p class="text-muted mb-4">Access your teaching resources account.</p>
 
-                    <!-- Login form posts back to this same page for PHP validation -->
-                    <form method="post" action="login.php" novalidate>
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input
-                                type="text"
-                                id="username"
-                                name="username"
-                                class="form-control"
-                                value="<?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?>"
-                                autocomplete="username"
-                            >
-                            <?php if ($usernameErr !== ''): ?>
-                                <p class="text-danger small mt-2 mb-0"><?php echo htmlspecialchars($usernameErr, ENT_QUOTES, 'UTF-8'); ?></p>
-                            <?php endif; ?>
+                            <!-- Login form posts back to this same page for PHP validation -->
+                            <form method="post" action="login.php" novalidate>
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input
+                                        type="text"
+                                        id="username"
+                                        name="username"
+                                        class="form-control"
+                                        value="<?php echo htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?>"
+                                        autocomplete="username"
+                                    >
+                                    <?php if ($usernameErr !== ''): ?>
+                                        <p class="text-danger small mt-2 mb-0"><?php echo htmlspecialchars($usernameErr, ENT_QUOTES, 'UTF-8'); ?></p>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        class="form-control"
+                                        autocomplete="current-password"
+                                    >
+                                    <span toggle="#password" class="zmdi-eye field-icon toggle-password"></span>
+                                    <?php if ($passwordErr !== ''): ?>
+                                        <p class="text-danger small mt-2 mb-0"><?php echo htmlspecialchars($passwordErr, ENT_QUOTES, 'UTF-8'); ?></p>
+                                    <?php endif; ?>
+                                </div>
+
+                                <button type="submit" name="submit" class="btn btn-primary w-100">Login</button>
+                            </form>
+
+                            <p class="mt-4 mb-0 small">Don't have an account? <a href="registration.php">Sign up now</a>.</p>
                         </div>
-
-                        <div class="mb-4">
-                            <label for="password" class="form-label">Password</label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                class="form-control"
-                                autocomplete="current-password"
-                            >
-                            <?php if ($passwordErr !== ''): ?>
-                                <p class="text-danger small mt-2 mb-0"><?php echo htmlspecialchars($passwordErr, ENT_QUOTES, 'UTF-8'); ?></p>
-                            <?php endif; ?>
-                        </div>
-
-                        <button type="submit" name="submit" class="btn btn-primary w-100">Login</button>
-                    </form>
-
-                    <p class="mt-4 mb-0 small">Don't have an account? <a href="registration.php">Sign up now</a>.</p>
+                    </div>
                 </div>
-            </div>
+            </section>
         </div>
     </div>
 </main>

@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($firstName === '') {
         $firstNameErr = '*Please enter first name';
     }
-
+    
     // Validate last name.
     if ($lastName === '') {
         $lastNameErr = '*Please enter last name';
@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     // Execute insert and set final UI message.
                     if (mysqli_stmt_execute($insertStmt)) {
-                        $successMsg = 'Account created successfully. You can now log in.';
+                        $successMsg = 'Account created successfully.';
                         $firstName = '';
                         $lastName = '';
                         $username = '';
@@ -177,8 +177,9 @@ function alertBlock($value, $type)
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>876JA Digital Online Teaching Resources | Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -209,54 +210,64 @@ function alertBlock($value, $type)
 <!-- Registration content -->
 <main class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-7">
-            <div class="card shadow-sm border-0">
-                <div class="card-body p-4 p-md-5">
-                    <h1 class="h3 mb-3">Create Account</h1>
-                    <p class="text-muted mb-4">Register for an online account to access teaching resources.</p>
-                    <?php echo alertBlock($formErr, 'danger'); ?>
-                    <?php echo alertBlock($successMsg, 'success'); ?>
-                    <!-- Form posts to this page and is validated using PHP above -->
-                    <form method="post" action="registration.php" novalidate>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="first_name" class="form-label">First Name</label>
-                                <input type="text" id="first_name" name="first_name" class="form-control" value="<?php echo esc($firstName); ?>" autocomplete="given-name">
-                                <?php echo errBlock($firstNameErr); ?>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="last_name" class="form-label">Last Name</label>
-                                <input type="text" id="last_name" name="last_name" class="form-control" value="<?php echo esc($lastName); ?>" autocomplete="family-name">
-                                <?php echo errBlock($lastNameErr); ?>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" id="username" name="username" class="form-control" value="<?php echo esc($username); ?>" autocomplete="username">
-                                <?php echo errBlock($usernameErr); ?>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="text" id="email" name="email" class="form-control" value="<?php echo esc($email); ?>" autocomplete="email">
-                                <?php echo errBlock($emailErr); ?>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" id="password" name="password" class="form-control" autocomplete="new-password">
-                                <?php echo errBlock($passwordErr); ?>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="confirm_password" class="form-label">Confirm Password</label>
-                                <input type="password" id="confirm_password" name="confirm_password" class="form-control" autocomplete="new-password">
-                                <?php echo errBlock($confirmPasswordErr); ?>
-                            </div>
+        <div class="col-12 col-xl-11">
+            <section class="registration-layout card border-0 shadow-sm">
+                <div class="row g-0 align-items-stretch">
+                    <div class="col-lg-6">
+                        <div class="registration-media" role="img" aria-label="Students collaborating in a warm classroom setting"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card-body registration-form-panel p-4 p-md-5">
+                            <h1 class="h3 mb-3">Create Account</h1>
+                            <p class="text-muted mb-4">Register for an online account to access teaching resources.</p>
+                            <?php echo alertBlock($formErr, 'danger'); ?>
+                            <?php echo alertBlock($successMsg, 'success'); ?>
+
+                            <!-- Form posts to this page and is validated using PHP above -->
+                            <form method="post" action="registration.php" novalidate>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="first_name" class="form-label">First Name</label>
+                                        <input type="text" id="first_name" name="first_name" class="form-control" value="<?php echo esc($firstName); ?>" autocomplete="given-name">
+                                        <?php echo errBlock($firstNameErr); ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="last_name" class="form-label">Last Name</label>
+                                        <input type="text" id="last_name" name="last_name" class="form-control" value="<?php echo esc($lastName); ?>" autocomplete="family-name">
+                                        <?php echo errBlock($lastNameErr); ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="username" class="form-label">Username</label>
+                                        <input type="text" id="username" name="username" class="form-control" value="<?php echo esc($username); ?>" autocomplete="username">
+                                        <?php echo errBlock($usernameErr); ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="text" id="email" name="email" class="form-control" value="<?php echo esc($email); ?>" autocomplete="email">
+                                        <?php echo errBlock($emailErr); ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" id="password" name="password" class="form-control" autocomplete="new-password">
+                                        <span toggle="#password" class="zmdi-eye field-icon toggle-password"></span>
+                                        <?php echo errBlock($passwordErr); ?>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="confirm_password" class="form-label">Confirm Password</label>
+                                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" autocomplete="new-password">
+                                        <span toggle="#confirm_password" class="zmdi-eye field-icon toggle-password"></span>
+                                        <?php echo errBlock($confirmPasswordErr); ?>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100 mt-4">Create Account</button>
+                            </form>
+
+                            <p class="mt-4 mb-0 small">Already have an account? <a href="login.php">Login now</a>.</p>
                         </div>
-
-                        <button type="submit" class="btn btn-primary w-100 mt-4">Create Account</button>
-                    </form>
-
-                    <p class="mt-4 mb-0 small">Already have an account? <a href="login.php">Login now</a>.</p>
+                    </div>
                 </div>
-            </div>
+            </section>
         </div>
     </div>
 </main>

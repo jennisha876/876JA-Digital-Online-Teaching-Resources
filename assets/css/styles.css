@@ -9,6 +9,10 @@
 
 html {
     scroll-behavior: smooth;
+    background: url(“background.jpg”);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 body {
@@ -150,7 +154,7 @@ h1, h2, h3, .display-5, .display-6 {
     box-shadow: 0 0.8rem 1.8rem rgba(31, 41, 55, 0.08);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     height: 100%;
-    background: #fff;
+    background: #ffffff;
 }
 
 .category-card:hover,
@@ -261,6 +265,46 @@ h1, h2, h3, .display-5, .display-6 {
     background: transparent;
 }
 
+/* Shared split layout wrapper used by both registration and login pages. */
+.registration-layout {
+    border-radius: 1.5rem;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 1.25rem 3rem rgba(15, 23, 42, 0.12);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+}
+
+/* Left-side image panel in registration/login split layout. */
+.registration-media {
+    min-height: 100%;
+    background-color: #f6f1e8;
+    background-image: url('images/Student.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+/* Right-side form panel with a transparent glass finish. */
+.registration-form-panel {
+    background: rgba(255, 255, 255, 0.06);
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(22px);
+    backdrop-filter: blur(22px);
+}
+
+/* Make inputs inside the transparent panel keep the glass effect. */
+.registration-form-panel .form-control,
+.registration-form-panel .form-select {
+    background-color: rgba(255, 255, 255, 0.28);
+    border-color: rgba(15, 23, 42, 0.12);
+}
+
+.registration-form-panel .form-control::placeholder {
+    color: rgba(36, 50, 71, 0.55);
+}
+
 @media (max-width: 991.98px) {
     .hero-copy {
         padding: 2rem;
@@ -268,5 +312,9 @@ h1, h2, h3, .display-5, .display-6 {
 
     .hero-section {
         padding-top: 3.5rem;
+    }
+
+    .registration-media {
+        min-height: 18rem;
     }
 }
