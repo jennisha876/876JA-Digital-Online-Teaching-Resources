@@ -1,0 +1,87 @@
+name: Deploy to InfinityFree
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate private DB config from GitHub Secrets
+        shell: bash
+        run: |
+          # Escape single quotes so injected values stay valid inside PHP strings.
+          esc() {
+            printf "%s" "$1" | sed "s/'/'\\''/g"
+          }
+
+          DB_HOST_ESCAPED=$(esc "${{ secrets.DB_HOST }}")
+          DB_NAME_ESCAPED=$(esc "${{ secrets.DB_NAME }}")
+          DB_USER_ESCAPED=$(esc "${{ secrets.DB_USER }}")
+          DB_PASS_ESCAPED=$(esc "${{ secrets.DB_PASSWORD }}")
+
+          cat > db-config.local.php <<EOF
+          <?php
+          /* Auto-generated in CI from GitHub Secrets. Do not commit. */
+          return [
+              'host' => '${DB_HOST_ESCAPED}',
+              'username' => '${DB_USER_ESCAPED}',
+              'password' => '${DB_PASS_ESCAPED}',
+              'database' => '${DB_NAME_ESCAPED}',
+          ];
+          EOF
+
+      - name: Generate private SMTP config from GitHub Secrets
+        shell: bash
+        run: |
+          # Escape single quotes so injected values stay valid inside PHP strings.
+          esc() {
+            printf "%s" "$1" | sed "s/'/'\\''/g"
+          }
+
+          MAIL_ENABLED_ESCAPED=$(esc "${{ secrets.MAIL_ENABLED }}")
+          MAIL_HOST_ESCAPED=$(esc "${{ secrets.MAIL_HOST }}")
+          MAIL_PORT_ESCAPED=$(esc "${{ secrets.MAIL_PORT }}")
+          MAIL_ENCRYPTION_ESCAPED=$(esc "${{ secrets.MAIL_ENCRYPTION }}")
+          MAIL_USERNAME_ESCAPED=$(esc "${{ secrets.MAIL_USERNAME }}")
+          MAIL_PASSWORD_ESCAPED=$(esc "${{ secrets.MAIL_PASSWORD }}")
+          MAIL_FROM_EMAIL_ESCAPED=$(esc "${{ secrets.MAIL_FROM_EMAIL }}")
+          MAIL_FROM_NAME_ESCAPED=$(esc "${{ secrets.MAIL_FROM_NAME }}")
+
+          cat > mail-config.local.php <<EOF
+          <?php
+          /* Auto-generated in CI from GitHub Secrets. Do not commit. */
+          return [
+              'enabled' => strtolower('${MAIL_ENABLED_ESCAPED}') === 'true',
+              'host' => '${MAIL_HOST_ESCAPED}',
+              'port' => (int) '${MAIL_PORT_ESCAPED}',
+              'encryption' => '${MAIL_ENCRYPTION_ESCAPED}',
+              'username' => '${MAIL_USERNAME_ESCAPED}',
+              'password' => '${MAIL_PASSWORD_ESCAPED}',
+              'from_email' => '${MAIL_FROM_EMAIL_ESCAPED}',
+              'from_name' => '${MAIL_FROM_NAME_ESCAPED}',
+          ];
+          EOF
+
+      - name: Deploy files to InfinityFree via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          # Example: ftpupload.net
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Example: /htdocs/
+          server-dir: ${{ secrets.FTP_REMOTE_DIR }}
+          protocol: ftp
+          port: 21
+          exclude: |
+            **/.git*/**
+            **/.git*
+            **/.github/**
+            **/.vscode/**

@@ -2,13 +2,14 @@
 /*
 SMTP configuration for password reset emails.
 
-How to use in local XAMPP:
-1) Copy this file as-is and replace placeholder values with your SMTP credentials.
-2) For Gmail, use an App Password (not your normal Gmail password).
-3) Keep this file private and do not commit real passwords to public repositories.
+Design notes:
+1) This file keeps safe defaults only.
+2) Real credentials should be stored in mail-config.local.php (gitignored).
+3) For Gmail, use an App Password (not your normal Gmail password).
 */
 
-return [
+// Safe defaults for local development.
+$config = [
     // Enable SMTP sending only after credentials are filled in.
     'enabled' => false,
 
@@ -25,3 +26,15 @@ return [
     'from_email' => 'your_email@gmail.com',
     'from_name' => '876JA Digital Resources',
 ];
+
+// Optional private override file for production SMTP credentials.
+$localOverrideFile = __DIR__ . '/mail-config.local.php';
+if (is_file($localOverrideFile)) {
+    $overrideConfig = require $localOverrideFile;
+
+    if (is_array($overrideConfig)) {
+        $config = array_merge($config, $overrideConfig);
+    }
+}
+
+return $config;

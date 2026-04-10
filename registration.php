@@ -8,6 +8,9 @@ Form information is validated in PHP and stored in a database.
 // Session is started for future account flows (for example, post-register login state).
 session_start();
 
+// Load shared database configuration.
+$dbConfig = require __DIR__ . '/db-config.php';
+
 // Input value holders.
 // These keep submitted data available when validation fails.
 $firstName = '';
@@ -83,13 +86,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $passwordErr === '' &&
         $confirmPasswordErr === ''
     ) {
-        $host = 'localhost';
-        $dbUser = 'root';
-        $dbPassword = '';
-        $dbName = 'teaching';
-
         // Open database connection.
-        $conn = mysqli_connect($host, $dbUser, $dbPassword, $dbName);
+        $conn = mysqli_connect(
+            (string) ($dbConfig['host'] ?? 'localhost'),
+            (string) ($dbConfig['username'] ?? ''),
+            (string) ($dbConfig['password'] ?? ''),
+            (string) ($dbConfig['database'] ?? '')
+        );
 
         if (!$conn) {
             $formErr = 'Database connection failed: ' . mysqli_connect_error();

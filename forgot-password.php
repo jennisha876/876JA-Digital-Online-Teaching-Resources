@@ -4,6 +4,18 @@ Forgot Password - 876JA Digital Online Teaching Resources
 This page accepts an email address and creates a secure one-time reset link.
 */
 
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
+
+// Load Composer autoloader for PHPMailer.
+require_once __DIR__ . '/vendor/autoload.php';
+
+// Load SMTP settings from project configuration file.
+$mailConfig = require __DIR__ . '/mail-config.php';
+
+// Load shared database configuration.
+$dbConfig = require __DIR__ . '/db-config.php';
+
 // Session is available for future flow extensions and flash messaging.
 session_start();
 
@@ -31,6 +43,66 @@ function appBaseUrl()
     return $scheme . '://' . $host;
 }
 
+// Send password reset email through authenticated SMTP.
+function sendResetEmail($toEmail, $toName, $resetLink, $mailConfig, &$mailError)
+{
+    $mailError = '';
+
+    // Guard clause if SMTP config is intentionally disabled.
+    if (empty($mailConfig['enabled'])) {
+        $mailError = 'SMTP is currently disabled in mail-config.php.';
+        return false;
+    }
+
+    try {
+        $mailer = new PHPMailer(true);
+
+        // Configure SMTP transport settings.
+        $mailer->isSMTP();
+        $mailer->Host = (string) ($mailConfig['host'] ?? '');
+        $mailer->SMTPAuth = true;
+        $mailer->Username = (string) ($mailConfig['username'] ?? '');
+        $mailer->Password = (string) ($mailConfig['password'] ?? '');
+        $mailer->Port = (int) ($mailConfig['port'] ?? 587);
+        $mailer->CharSet = 'UTF-8';
+
+        // Map encryption text to PHPMailer constants.
+        $encryption = strtolower((string) ($mailConfig['encryption'] ?? 'tls'));
+        if ($encryption === 'ssl') {
+            $mailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        } else {
+            $mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        }
+
+        // Define sender and recipient.
+        $fromEmail = (string) ($mailConfig['from_email'] ?? '');
+        $fromName = (string) ($mailConfig['from_name'] ?? '876JA Digital Resources');
+        $mailer->setFrom($fromEmail, $fromName);
+        $mailer->addAddress($toEmail, $toName);
+
+        // Build plain-text and HTML email bodies.
+        $mailer->isHTML(true);
+        $mailer->Subject = '876JA Password Reset Request';
+        $mailer->Body =
+            '<p>Hello ' . esc($toName) . ',</p>' .
+            '<p>We received a request to reset your password.</p>' .
+            '<p><a href="' . esc($resetLink) . '">Click here to reset your password</a></p>' .
+            '<p>This link will expire in 30 minutes.</p>' .
+            '<p>If you did not request this, you can ignore this email.</p>';
+        $mailer->AltBody =
+            'Hello ' . $toName . "\n\n" .
+            'We received a request to reset your password.' . "\n" .
+            'Use this link (valid for 30 minutes): ' . $resetLink . "\n\n" .
+            'If you did not request this, please ignore this email.';
+
+        $mailer->send();
+        return true;
+    } catch (Exception $ex) {
+        $mailError = $ex->getMessage();
+        return false;
+    }
+}
+
 // Handle request form submission.
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Read and normalize user email.
@@ -45,106 +117,87 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Continue only when validation passed.
     if ($emailErr === '') {
-        // Database connection settings.
-        $host = 'localhost';
-        $dbUser = 'root';
-        $dbPassword = '';
-        $dbName = 'teaching';
-
-        $conn = mysqli_connect($host, $dbUser, $dbPassword, $dbName);
+        // Open database connection using shared config values.
+        $conn = mysqli_connect(
+            (string) ($dbConfig['host'] ?? 'localhost'),
+            (string) ($dbConfig['username'] ?? ''),
+            (string) ($dbConfig['password'] ?? ''),
+            (string) ($dbConfig['database'] ?? '')
+        );
 
         if (!$conn) {
             $formErr = 'Database connection failed: ' . mysqli_connect_error();
         } else {
-            // Ensure reset token table exists.
-            $createSql = "CREATE TABLE IF NOT EXISTS password_resets (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT NOT NULL,
-                token_hash VARCHAR(255) NOT NULL,
-                expires_at DATETIME NOT NULL,
-                used_at DATETIME NULL,
-                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                INDEX idx_password_resets_user_id (user_id),
-                INDEX idx_password_resets_expires_at (expires_at),
-                CONSTRAINT fk_password_resets_user
-                    FOREIGN KEY (user_id) REFERENCES users(id)
-                    ON DELETE CASCADE
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+            // Find user by email. This is the only identifier used in reset requests.
+            $findUserSql = 'SELECT id, username, email FROM users WHERE email = ? LIMIT 1';
+            $findUserStmt = mysqli_prepare($conn, $findUserSql);
 
-            if (!mysqli_query($conn, $createSql)) {
-                $formErr = 'Unable to prepare password reset table: ' . mysqli_error($conn);
+            if (!$findUserStmt) {
+                $formErr = 'Unable to prepare reset lookup: ' . mysqli_error($conn);
             } else {
-                // Find user by email. This is the only identifier used in reset requests.
-                $findUserSql = 'SELECT id, username, email FROM users WHERE email = ? LIMIT 1';
-                $findUserStmt = mysqli_prepare($conn, $findUserSql);
+                mysqli_stmt_bind_param($findUserStmt, 's', $email);
+                mysqli_stmt_execute($findUserStmt);
+                $findResult = mysqli_stmt_get_result($findUserStmt);
+                $user = $findResult ? mysqli_fetch_assoc($findResult) : null;
+                mysqli_stmt_close($findUserStmt);
 
-                if (!$findUserStmt) {
-                    $formErr = 'Unable to prepare reset lookup: ' . mysqli_error($conn);
-                } else {
-                    mysqli_stmt_bind_param($findUserStmt, 's', $email);
-                    mysqli_stmt_execute($findUserStmt);
-                    $findResult = mysqli_stmt_get_result($findUserStmt);
-                    $user = $findResult ? mysqli_fetch_assoc($findResult) : null;
-                    mysqli_stmt_close($findUserStmt);
+                // Create and save a token only when an account exists for the email.
+                if ($user) {
+                    $userId = (int) $user['id'];
 
-                    // Create and save a token only when an account exists for the email.
-                    if ($user) {
-                        $userId = (int) $user['id'];
-
-                        // Invalidate existing unused tokens for this user.
-                        $expireOldSql = 'UPDATE password_resets SET used_at = NOW() WHERE user_id = ? AND used_at IS NULL';
-                        $expireOldStmt = mysqli_prepare($conn, $expireOldSql);
-                        if ($expireOldStmt) {
-                            mysqli_stmt_bind_param($expireOldStmt, 'i', $userId);
-                            mysqli_stmt_execute($expireOldStmt);
-                            mysqli_stmt_close($expireOldStmt);
-                        }
-
-                        // Generate cryptographically secure token and store only its hash.
-                        $rawToken = bin2hex(random_bytes(32));
-                        $tokenHash = password_hash($rawToken, PASSWORD_DEFAULT);
-
-                        $insertTokenSql = 'INSERT INTO password_resets (user_id, token_hash, expires_at) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 30 MINUTE))';
-                        $insertTokenStmt = mysqli_prepare($conn, $insertTokenSql);
-
-                        if (!$insertTokenStmt) {
-                            $formErr = 'Unable to prepare reset token insert: ' . mysqli_error($conn);
-                        } else {
-                            mysqli_stmt_bind_param($insertTokenStmt, 'is', $userId, $tokenHash);
-
-                            if (!mysqli_stmt_execute($insertTokenStmt)) {
-                                $formErr = 'Unable to create reset token: ' . mysqli_stmt_error($insertTokenStmt);
-                            }
-
-                            mysqli_stmt_close($insertTokenStmt);
-                        }
-
-                        // Send reset email when token insert succeeded.
-                        if ($formErr === '') {
-                            $resetLink = appBaseUrl() . '/reset-password.php?token=' . urlencode($rawToken);
-
-                            $subject = '876JA Password Reset Request';
-                            $message = "Hello " . $user['username'] . ",\n\n" .
-                                "We received a request to reset your password.\n" .
-                                "Use this link (valid for 30 minutes):\n" . $resetLink . "\n\n" .
-                                "If you did not request this, please ignore this email.";
-                            $headers = 'From: no-reply@876ja.local' . "\r\n";
-
-                            // mail() may be unavailable in local XAMPP. Keep generic UI response either way.
-                            $mailSent = @mail($email, $subject, $message, $headers);
-
-                            // Expose debug link in local development to simplify testing.
-                            if (!$mailSent && in_array(($_SERVER['HTTP_HOST'] ?? ''), ['localhost', '127.0.0.1', 'localhost:8000', '127.0.0.1:8000'], true)) {
-                                $debugResetLink = $resetLink;
-                            }
-                        }
+                    // Invalidate existing unused tokens for this user.
+                    $expireOldSql = 'UPDATE password_resets SET used_at = NOW() WHERE user_id = ? AND used_at IS NULL';
+                    $expireOldStmt = mysqli_prepare($conn, $expireOldSql);
+                    if ($expireOldStmt) {
+                        mysqli_stmt_bind_param($expireOldStmt, 'i', $userId);
+                        mysqli_stmt_execute($expireOldStmt);
+                        mysqli_stmt_close($expireOldStmt);
                     }
 
-                    // Always return the same message to prevent email enumeration.
+                    // Generate cryptographically secure token and store only its hash.
+                    $rawToken = bin2hex(random_bytes(32));
+                    $tokenHash = password_hash($rawToken, PASSWORD_DEFAULT);
+
+                    $insertTokenSql = 'INSERT INTO password_resets (user_id, token_hash, expires_at) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 30 MINUTE))';
+                    $insertTokenStmt = mysqli_prepare($conn, $insertTokenSql);
+
+                    if (!$insertTokenStmt) {
+                        $formErr = 'Unable to prepare reset token insert: ' . mysqli_error($conn);
+                    } else {
+                        mysqli_stmt_bind_param($insertTokenStmt, 'is', $userId, $tokenHash);
+
+                        if (!mysqli_stmt_execute($insertTokenStmt)) {
+                            $formErr = 'Unable to create reset token: ' . mysqli_stmt_error($insertTokenStmt);
+                        }
+
+                        mysqli_stmt_close($insertTokenStmt);
+                    }
+
+                    // Send reset email when token insert succeeded.
                     if ($formErr === '') {
-                        $infoMsg = 'If an account with that email exists, a reset link has been sent.';
-                        $email = '';
+                        $resetLink = appBaseUrl() . '/reset-password.php?token=' . urlencode($rawToken);
+
+                        // Use SMTP email delivery via PHPMailer.
+                        $mailError = '';
+                        $mailSent = sendResetEmail($email, $user['username'], $resetLink, $mailConfig, $mailError);
+
+                        // Local fallback: show reset link when SMTP is disabled in config.
+                        $isLocalHost = in_array(($_SERVER['HTTP_HOST'] ?? ''), ['localhost', '127.0.0.1', 'localhost:8000', '127.0.0.1:8000'], true);
+                        if (!$mailSent && $isLocalHost && empty($mailConfig['enabled'])) {
+                            $debugResetLink = $resetLink;
+                        }
+
+                        // If SMTP is enabled but sending failed, show a real error for admin fix.
+                        if (!$mailSent && !empty($mailConfig['enabled'])) {
+                            $formErr = 'Unable to send reset email: ' . $mailError;
+                        }
                     }
+                }
+
+                // Always return the same message to prevent email enumeration.
+                if ($formErr === '') {
+                    $infoMsg = 'If an account with that email exists, a reset link has been sent.';
+                    $email = '';
                 }
             }
 
@@ -202,7 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
 
                 <?php if ($debugResetLink !== ''): ?>
-                    <!-- Local testing helper shown only when mail() is unavailable on localhost. -->
+                    <!-- Local testing helper shown when SMTP is disabled on localhost. -->
                     <div class="alert alert-warning" role="alert">
                         Local test reset link: <a href="<?php echo esc($debugResetLink); ?>"><?php echo esc($debugResetLink); ?></a>
                     </div>

@@ -1,0 +1,6 @@
+# Private configuration override files (never commit secrets)
+db-config.local.php
+mail-config.local.php
+
+# Local Composer binary installed for development convenience
+composer.phar

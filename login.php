@@ -7,6 +7,9 @@ This form will be used to log in registered users based on credentials stored in
 // Start session early so authenticated user state can be stored and read safely.
 session_start();
 
+// Load shared database configuration.
+$dbConfig = require __DIR__ . '/db-config.php';
+
 // Initialize form values and error messages.
 // These defaults prevent undefined variable notices on first page load.
 $username = '';
@@ -38,14 +41,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // If validation succeeds, validate credentials against database and then redirect.
     if ($usernameErr === '' && $passwordErr === '') {
-        // Database connection settings (same as registration page).
-        $host = 'localhost';
-        $dbUser = 'root';
-        $dbPassword = '';
-        $dbName = 'teaching';
-
         // Open database connection and validate login securely.
-        $conn = mysqli_connect($host, $dbUser, $dbPassword, $dbName);
+        $conn = mysqli_connect(
+            (string) ($dbConfig['host'] ?? 'localhost'),
+            (string) ($dbConfig['username'] ?? ''),
+            (string) ($dbConfig['password'] ?? ''),
+            (string) ($dbConfig['database'] ?? '')
+        );
 
         if (!$conn) {
             $formErr = 'Database connection failed: ' . mysqli_connect_error();

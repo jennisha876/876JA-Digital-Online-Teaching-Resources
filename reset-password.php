@@ -7,6 +7,9 @@ This page validates a reset token and updates the user's password hash in the da
 // Session is available for future flow extensions and flash messaging.
 session_start();
 
+// Load shared database configuration.
+$dbConfig = require __DIR__ . '/db-config.php';
+
 // Form and UI state variables.
 $token = trim($_GET['token'] ?? ($_POST['token'] ?? ''));
 $password = '';
@@ -51,13 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $formErr === '') {
     if ($token === '') {
         $formErr = 'Invalid or missing reset token.';
     } elseif ($passwordErr === '' && $confirmPasswordErr === '') {
-        // Database connection settings.
-        $host = 'localhost';
-        $dbUser = 'root';
-        $dbPassword = '';
-        $dbName = 'teaching';
-
-        $conn = mysqli_connect($host, $dbUser, $dbPassword, $dbName);
+        // Open database connection using shared config values.
+        $conn = mysqli_connect(
+            (string) ($dbConfig['host'] ?? 'localhost'),
+            (string) ($dbConfig['username'] ?? ''),
+            (string) ($dbConfig['password'] ?? ''),
+            (string) ($dbConfig['database'] ?? '')
+        );
 
         if (!$conn) {
             $formErr = 'Database connection failed: ' . mysqli_connect_error();
