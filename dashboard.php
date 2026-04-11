@@ -39,9 +39,8 @@ function navActive($page, $activePage)
         </button>
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
-                <li class="nav-item"><a class="nav-link<?php echo navActive('dashboard', $activePage); ?>" href="dashboard.php">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link<?php echo navActive('library', $activePage); ?>" href="library.php">Resource Catalog</a></li>
-                <li class="nav-item"><a class="nav-link<?php echo navActive('pricing', $activePage); ?>" href="pricing.php">Subscription Plans</a></li>
+                <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link<?php echo navActive('member-catalog', $activePage); ?>" href="member-catalog.php">Resource Catalog</a></li>
                 <li class="nav-item"><a class="nav-link<?php echo navActive('payment', $activePage); ?>" href="payment.php">Payments</a></li>
                 <li class="nav-item"><a class="nav-login-btn" href="logout.php">Log out</a></li>
             </ul>
@@ -49,44 +48,60 @@ function navActive($page, $activePage)
     </div>
 </nav>
 
-<header class="hero-section">
-    <div class="container text-center">
-        <h1>Welcome back, <?php echo htmlspecialchars((string) ($_SESSION['username'] ?? 'Member'), ENT_QUOTES, 'UTF-8'); ?></h1>
-        <p class="mx-auto mt-3">
-            This is your dashboard homepage. Jump directly into your resource catalog,
-            manage subscription plans, and complete payments from one place.
-        </p>
-        <a href="library.php" class="btn btn-light btn-lg mt-3">Open Resource Catalog</a>
-        <a href="pricing.php" class="btn btn-light btn-lg mt-3 ms-2">View Plans</a>
-    </div>
-</header>
-
 <section class="py-5">
     <div class="container">
-        <h2 class="section-title text-center">Quick Access</h2>
+        <div class="dashboard-welcome-card p-4 p-md-5 mb-4">
+            <h1 class="mb-2">Welcome back, <?php echo htmlspecialchars((string) ($_SESSION['username'] ?? 'Member'), ENT_QUOTES, 'UTF-8'); ?></h1>
+            <p class="mb-0">Track your started resources, completed lessons, and current progress from your dashboard.</p>
+        </div>
+
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="card feature-card p-4 h-100">
-                    <div class="feature-icon mb-3"><i class="bi bi-collection"></i></div>
-                    <h4>Resource Catalog</h4>
-                    <p>Browse categorized worksheets, lessons, and digital classroom files.</p>
-                    <a href="library.php" class="btn btn-primary mt-auto">Go to Catalog</a>
+                <div class="card dashboard-stat-card p-4 h-100">
+                    <p class="dashboard-stat-label mb-2">Started</p>
+                    <h2 class="dashboard-stat-value mb-2">12</h2>
+                    <p class="mb-0">Resources you have started in this term.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card feature-card p-4 h-100">
-                    <div class="feature-icon mb-3"><i class="bi bi-stars"></i></div>
-                    <h4>Subscription Plans</h4>
-                    <p>Compare plans and choose the best package for your teaching needs.</p>
-                    <a href="pricing.php" class="btn btn-primary mt-auto">View Plans</a>
+                <div class="card dashboard-stat-card p-4 h-100">
+                    <p class="dashboard-stat-label mb-2">Completed</p>
+                    <h2 class="dashboard-stat-value mb-2">7</h2>
+                    <p class="mb-0">Resources completed and marked done.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card feature-card p-4 h-100">
-                    <div class="feature-icon mb-3"><i class="bi bi-credit-card-2-front"></i></div>
-                    <h4>Payments</h4>
-                    <p>Complete secure payments and manage your active subscription status.</p>
-                    <a href="payment.php" class="btn btn-primary mt-auto">Go to Payments</a>
+                <div class="card dashboard-stat-card p-4 h-100">
+                    <p class="dashboard-stat-label mb-2">In Progress</p>
+                    <h2 class="dashboard-stat-value mb-2">5</h2>
+                    <p class="mb-0">Resources currently active in your workflow.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mt-1">
+            <div class="col-lg-7">
+                <div class="card dashboard-panel p-4 h-100">
+                    <h4 class="mb-3">Recent Activity</h4>
+                    <div class="dashboard-activity-item d-flex justify-content-between align-items-center mb-3">
+                        <span>Mathematics Worksheet Pack 4</span>
+                        <span class="badge badge-soft">Completed</span>
+                    </div>
+                    <div class="dashboard-activity-item d-flex justify-content-between align-items-center mb-3">
+                        <span>Science Lab Notes: Energy</span>
+                        <span class="badge badge-soft">In Progress</span>
+                    </div>
+                    <div class="dashboard-activity-item d-flex justify-content-between align-items-center">
+                        <span>Language Arts: Writing Prompt Set</span>
+                        <span class="badge badge-soft">Started</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card dashboard-panel p-4 h-100">
+                    <h4 class="mb-3">Quick Actions</h4>
+                    <a href="member-catalog.php" class="btn btn-primary w-100 mb-3">Continue Learning</a>
+                    <a href="payment.php" class="btn btn-outline-primary w-100">Manage Payments</a>
                 </div>
             </div>
         </div>
@@ -103,12 +118,12 @@ function navActive($page, $activePage)
             <div class="col-md-4">
                 <h5>Member Links</h5>
                 <p><a href="dashboard.php">Dashboard</a></p>
-                <p><a href="library.php">Resource Catalog</a></p>
-                <p><a href="pricing.php">Subscription Plans</a></p>
+                <p><a href="member-catalog.php">Resource Catalog</a></p>
+                <p><a href="payment.php">Payments</a></p>
             </div>
             <div class="col-md-4">
                 <h5>Support</h5>
-                <p><a href="mailto:876JAdigitalresources@gmail.com">Contact Support</a></p>
+                <p><a href="contact.php">Contact Support</a></p>
                 <p><a href="faq.php">FAQ</a></p>
                 <p><a href="logout.php">Log out</a></p>
             </div>

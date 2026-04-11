@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="about.php">About Us</a></li>
-                <li class="nav-item"><a class="nav-link" href="mailto:876JAdigitalresources@gmail.com">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.php">Contact Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="faq.php">FAQ</a></li>
                 <li class="nav-item"><a class="nav-link" href="pricing.php">Pricing</a></li>
                 <li class="nav-item"><a class="nav-link" href="library.php">Library</a></li>

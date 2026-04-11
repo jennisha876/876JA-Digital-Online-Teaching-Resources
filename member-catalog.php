@@ -1,31 +1,20 @@
 <?php
 /*
-Payments - 876JA Digital Online Teaching Resources
-Authenticated member page for completing subscription payments.
+Member Resource Catalog - 876JA Digital Online Teaching Resources
+This page is the private resource catalog for logged-in users.
 */
 
-// Protect this page for authenticated users.
+// Require login so this catalog remains separate from the public library page.
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
 
-$pageTitle = '876JA Digital Online Teaching Resources | Payments';
-$activePage = 'payment';
-$selectedPlan = strtolower(trim((string) ($_GET['plan'] ?? '')));
+$pageTitle = '876JA Digital Online Teaching Resources | Member Resource Catalog';
+$activePage = 'member-catalog';
 
-// Sanitize incoming plan values so only supported plans are shown.
-$allowedPlans = [
-    'basic' => 'Basic',
-    'pro' => 'Pro',
-    'school' => 'School License',
-];
-if (!isset($allowedPlans[$selectedPlan])) {
-    $selectedPlan = 'basic';
-}
-
-// Helper to set active nav class.
+// Helper to set active navbar class.
 function navActive($page, $activePage)
 {
     return $page === $activePage ? ' active' : '';
@@ -61,35 +50,34 @@ function navActive($page, $activePage)
 
 <section class="py-5">
     <div class="container">
-        <h1 class="section-title text-center">Payments</h1>
-        <p class="text-center mb-4">Complete your payment to activate or renew your subscription.</p>
+        <h1 class="section-title text-center">Your Resource Catalog</h1>
+        <p class="text-center mb-4">This private catalog shows your member-focused materials and progress items.</p>
 
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-8">
-                <div class="card checkout-card p-4">
-                    <h5 class="mb-3">Selected Plan: <?php echo htmlspecialchars($allowedPlans[$selectedPlan], ENT_QUOTES, 'UTF-8'); ?></h5>
-                    <form action="#" method="post" novalidate>
-                        <!-- This form is a UI placeholder for payment gateway integration. -->
-                        <div class="mb-3">
-                            <label for="card_name" class="form-label">Name on Card</label>
-                            <input type="text" id="card_name" class="form-control" placeholder="Enter cardholder name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="card_number" class="form-label">Card Number</label>
-                            <input type="text" id="card_number" class="form-control" placeholder="1234 5678 9012 3456">
-                        </div>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label for="expiry" class="form-label">Expiry Date</label>
-                                <input type="text" id="expiry" class="form-control" placeholder="MM/YY">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="cvv" class="form-label">CVV</label>
-                                <input type="text" id="cvv" class="form-control" placeholder="123">
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-primary w-100">Pay Now</button>
-                    </form>
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card dashboard-panel p-4 h-100">
+                    <h4 class="mb-3">Continue Where You Left Off</h4>
+                    <div class="dashboard-activity-item d-flex justify-content-between align-items-center mb-3">
+                        <span>Mathematics - Fractions Mastery Pack</span>
+                        <span class="badge badge-soft">72% Complete</span>
+                    </div>
+                    <div class="dashboard-activity-item d-flex justify-content-between align-items-center mb-3">
+                        <span>Science - Energy and Forces Worksheet Set</span>
+                        <span class="badge badge-soft">48% Complete</span>
+                    </div>
+                    <div class="dashboard-activity-item d-flex justify-content-between align-items-center">
+                        <span>Language Arts - Persuasive Writing Toolkit</span>
+                        <span class="badge badge-soft">Started</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card dashboard-panel p-4 h-100">
+                    <h4 class="mb-3">Recommended For You</h4>
+                    <p class="mb-2">- Social Studies: Caribbean History Activity Pack</p>
+                    <p class="mb-2">- IT: Spreadsheet Skills Challenge</p>
+                    <p class="mb-3">- Business: Intro to Budget Planning</p>
+                    <a href="payment.php" class="btn btn-outline-primary w-100">Manage Access</a>
                 </div>
             </div>
         </div>
