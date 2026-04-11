@@ -217,7 +217,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="assets/css/styles.css" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-dark site-navbar sticky-top shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="index.php">876JA Digital Resources</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -227,10 +227,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="about.php">About Us</a></li>
-                <li class="nav-item"><a class="nav-link" href="library.php">Resource Library</a></li>
-                <li class="nav-item"><a class="nav-link" href="pricing.php">Pricing</a></li>
-                <li class="nav-item"><a class="nav-link" href="payment.php">Payment</a></li>
+                <li class="nav-item"><a class="nav-link" href="mailto:876JAdigitalresources@gmail.com">Contact Us</a></li>
                 <li class="nav-item"><a class="nav-link" href="faq.php">FAQ</a></li>
+                <li class="nav-item"><a class="nav-link" href="pricing.php">Pricing</a></li>
+                <li class="nav-item"><a class="nav-link" href="library.php">Library</a></li>
                 <li class="nav-item"><a class="nav-login-btn active" href="login.php">Login</a></li>
             </ul>
         </div>
