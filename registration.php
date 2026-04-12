@@ -1,6 +1,5 @@
 <?php
 /*
-Registration Form - Jennisha Smith
 This allows new users to register for an online account.
 Form information is validated in PHP and stored in a database.
 */
@@ -9,7 +8,7 @@ Form information is validated in PHP and stored in a database.
 session_start();
 
 // Load shared database configuration.
-$dbConfig = require __DIR__ . '/db-config.php';
+$dbConfig = require __DIR__ . '/database/db-config.php';
 
 // Input value holders.
 // These keep submitted data available when validation fails.

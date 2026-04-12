@@ -8,7 +8,7 @@ This page validates a reset token and updates the user's password hash in the da
 session_start();
 
 // Load shared database configuration.
-$dbConfig = require __DIR__ . '/db-config.php';
+$dbConfig = require __DIR__ . '/database/db-config.php';
 
 // Form and UI state variables.
 $token = trim($_GET['token'] ?? ($_POST['token'] ?? ''));

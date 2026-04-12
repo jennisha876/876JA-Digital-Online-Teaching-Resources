@@ -14,7 +14,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 $mailConfig = require __DIR__ . '/mail-config.php';
 
 // Load shared database configuration.
-$dbConfig = require __DIR__ . '/db-config.php';
+$dbConfig = require __DIR__ . '/database/db-config.php';
 
 // Session is available for future flow extensions and flash messaging.
 session_start();
