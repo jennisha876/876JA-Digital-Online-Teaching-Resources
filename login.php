@@ -8,7 +8,7 @@ This form will be used to log in registered users based on credentials stored in
 session_start();
 
 // Load shared database configuration.
-$dbConfig = require __DIR__ . '/db-config.php';
+$dbConfig = require __DIR__ . '/database/db-config.php';
 
 // Initialize form values and error messages.
 // These defaults prevent undefined variable notices on first page load.
