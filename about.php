@@ -83,7 +83,7 @@ function navActive($page, $activePage) { return $page === $activePage ? ' active
             <!-- Put the WHATEVER PICTURE TO DA RIGHT -->
             <div class="col-6">
                 <!-- PLEASE CHANGE THIS PICTURE -->
-                <img src="https://placehold.co/500x375?text=Our+Team" 
+                <img src="assets/css/images/cis_building2.jpg" 
                      class="img-fluid rounded w-75" 
                      alt="Our Team">
             </div>
@@ -116,7 +116,7 @@ function navActive($page, $activePage) { return $page === $activePage ? ' active
             <!-- left side - the image -->
             <div class="col-6">
                 <!-- PLEASE REPLACE THIS PICTURE -->
-                <img src="https://placehold.co/500x375?text=Why+Choose+Us" 
+                <img src="assets/css/images/young-teenage-girl-sitting-her-bed-studying-using-laptop.jpg" 
                      class="img-fluid rounded w-75" 
                      alt="Why Choose Us">
             </div>
