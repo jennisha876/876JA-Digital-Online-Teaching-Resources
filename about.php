@@ -82,7 +82,7 @@ function navActive($page, $activePage) { return $page === $activePage ? ' active
 
             <!-- Put the WHATEVER PICTURE TO DA RIGHT -->
             <div class="col-6">
-                <!-- PLEASE CHANGE THIS PICTURE -->
+                <!-- Picture of the department building-->
                 <img src="assets/css/images/cis_building2.jpg" 
                      class="img-fluid rounded w-75" 
                      alt="Our Team">
@@ -115,7 +115,7 @@ function navActive($page, $activePage) { return $page === $activePage ? ' active
 
             <!-- left side - the image -->
             <div class="col-6">
-                <!-- PLEASE REPLACE THIS PICTURE -->
+                <!-- Pcture of girl -->
                 <img src="assets/css/images/young-teenage-girl-sitting-her-bed-studying-using-laptop.jpg" 
                      class="img-fluid rounded w-75" 
                      alt="Why Choose Us">
