@@ -1,10 +1,10 @@
-<?php
+﻿<?php
 /*
 Member Resource Catalog - 876JA Digital Online Teaching Resources
 Private catalog for logged-in subscribers with full download access.
 */
 
-// Require login — redirect guests to login page.
+// Require login â€” redirect guests to login page.
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
@@ -78,6 +78,7 @@ $levelBadge = [
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="assets/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/css/images/876Logo.png">
     <style>
         .cat-icon-wrap {
             width: 3.2rem; height: 3.2rem; border-radius: 0.9rem;
@@ -116,7 +117,7 @@ $levelBadge = [
 </head>
 <body>
 
-<!-- ── Member Navigation ── -->
+<!-- â”€â”€ Member Navigation â”€â”€ -->
 <nav class="navbar navbar-expand-lg navbar-dark site-navbar sticky-top shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="dashboard.php">876JA Digital Resources</a>
@@ -135,7 +136,7 @@ $levelBadge = [
     </div>
 </nav>
 
-<!-- ── Page Banner ── -->
+<!-- â”€â”€ Page Banner â”€â”€ -->
 <section class="page-banner">
     <div class="container">
         <h1>Your Resource Catalog</h1>
@@ -145,7 +146,7 @@ $levelBadge = [
 
 <div class="container pb-5">
 
-    <!-- ── Search & Filter Bar ── -->
+    <!-- â”€â”€ Search & Filter Bar â”€â”€ -->
     <div class="catalog-filter-bar mb-5">
         <div class="row g-3 align-items-end">
             <div class="col-md-5">
@@ -153,7 +154,7 @@ $levelBadge = [
                 <div class="input-group">
                     <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
                     <input type="text" id="searchInput" class="form-control border-start-0 ps-0"
-                           placeholder="e.g. C++, HTML, SQL…" autocomplete="off">
+                           placeholder="e.g. C++, HTML, SQLâ€¦" autocomplete="off">
                 </div>
             </div>
             <div class="col-md-3">
@@ -184,7 +185,7 @@ $levelBadge = [
         </div>
     </div>
 
-    <!-- ── Category Cards ── -->
+    <!-- â”€â”€ Category Cards â”€â”€ -->
     <h2 class="section-title mb-1">Browse by Course</h2>
     <p class="text-muted mb-4">Click a category to filter resources below.</p>
     <div class="row g-3 mb-5" id="categoryCards">
@@ -204,7 +205,7 @@ $levelBadge = [
         <?php endforeach; ?>
     </div>
 
-    <!-- ── Resource Table ── -->
+    <!-- â”€â”€ Resource Table â”€â”€ -->
     <h2 class="section-title mb-1">All Resources</h2>
     <p class="text-muted mb-4" id="resourceCount">
         Showing <?php echo count($resources); ?> resource<?php echo count($resources) !== 1 ? 's' : ''; ?>
@@ -269,7 +270,7 @@ $levelBadge = [
 
 </div>
 
-<!-- ── Footer ── -->
+<!-- â”€â”€ Footer â”€â”€ -->
 <footer class="footer-area">
     <div class="container">
         <div class="row g-4">

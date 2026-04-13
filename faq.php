@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
 FAQ - 876JA Digital Online Teaching Resources
 Frequently asked questions grouped by topic 
@@ -64,8 +64,9 @@ $faqs = [
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="assets/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/css/images/876Logo.png">
     <style>
-        /* ── FAQ-specific styles ── */
+        /* â”€â”€ FAQ-specific styles â”€â”€ */
         .faq-section-heading {
             font-size: 0.75rem;
             font-weight: 700;
@@ -140,7 +141,7 @@ $faqs = [
 </head>
 <body>
 
-<!-- ── Navigation ── -->
+<!-- â”€â”€ Navigation â”€â”€ -->
 <nav class="navbar navbar-expand-lg navbar-dark site-navbar sticky-top shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="index.php">876JA Digital Resources</a>
@@ -162,7 +163,7 @@ $faqs = [
     </div>
 </nav>
 
-<!-- ── Page Banner ── -->
+<!-- â”€â”€ Page Banner â”€â”€ -->
 <section class="page-banner">
     <div class="container">
         <h1>Frequently Asked Questions</h1>
@@ -172,14 +173,14 @@ $faqs = [
 
 <div class="container pb-5">
 
-    <!-- ── Search ── -->
+    <!-- â”€â”€ Search â”€â”€ -->
     <div class="faq-search-wrap">
         <div class="input-group">
             <span class="input-group-text bg-white border-end-0">
                 <i class="bi bi-search text-muted"></i>
             </span>
             <input type="text" id="faqSearch" class="form-control border-start-0 ps-0"
-                   placeholder="Search questions…" autocomplete="off">
+                   placeholder="Search questionsâ€¦" autocomplete="off">
             <button class="btn btn-outline-secondary" id="clearSearch" style="display:none;" title="Clear">
                 <i class="bi bi-x-lg"></i>
             </button>
@@ -187,7 +188,7 @@ $faqs = [
         <p id="searchStatus" class="text-muted small mt-2 text-center" style="min-height:1.2em;"></p>
     </div>
 
-    <!-- ── FAQ Groups ── -->
+    <!-- â”€â”€ FAQ Groups â”€â”€ -->
     <?php
     $groupIndex = 0;
     foreach ($faqs as $groupName => $items):
@@ -230,7 +231,7 @@ $faqs = [
         <a href="contact.php" class="btn btn-warning fw-semibold mt-1">Ask Us Directly</a>
     </div>
 
-    <!-- ── Still need help CTA ── -->
+    <!-- â”€â”€ Still need help CTA â”€â”€ -->
     <div class="cta-box mt-4 text-center" id="ctaBox">
         <h5 class="fw-bold mb-1">Still have a question?</h5>
         <p class="text-muted mb-3">Our support team is happy to help. Send us a message and we'll get back to you.</p>
@@ -240,7 +241,7 @@ $faqs = [
 
 </div>
 
-<!-- ── Footer ── -->
+<!-- â”€â”€ Footer â”€â”€ -->
 <footer class="footer-area">
     <div class="container">
         <div class="row g-4">
@@ -266,7 +267,7 @@ $faqs = [
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// ── FAQ live search ──
+// â”€â”€ FAQ live search â”€â”€
 const searchInput  = document.getElementById('faqSearch');
 const clearBtn     = document.getElementById('clearSearch');
 const statusEl     = document.getElementById('searchStatus');

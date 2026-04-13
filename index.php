@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $pageTitle = '876JA Digital Resources | Home';
 $activePage = 'home';
 
@@ -12,10 +12,11 @@ function navActive($page, $activePage) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= htmlspecialchars($pageTitle) ?></title>
+    <title>876JA Digital Resources | Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="assets/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/css/images/876Logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700;800&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -24,7 +25,7 @@ function navActive($page, $activePage) {
 <nav class="navbar navbar-expand-lg navbar-dark site-navbar sticky-top shadow-sm">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="index.php">
-            <img src="assets/images/logo.png" alt="876JA Logo" height="48" class="me-2">
+            <img src="assets/images/876LogoTrans.png" alt="876JA Logo" height="48" class="me-2">
             <span class="fw-bold">876JA</span> Digital Resources
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
@@ -61,7 +62,7 @@ function navActive($page, $activePage) {
             <a href="registration.php" class="btn btn-outline-light btn-lg px-5 py-3">Create Free Account</a>
         </div>
         <div class="mt-5">
-            <small class="eyebrow">🇯🇲 Trusted by 2,400+ Jamaican Teachers</small>
+            <small class="eyebrow">ðŸ‡¯ðŸ‡² Trusted by 2,400+ Jamaican Teachers</small>
         </div>
     </div>
 </header>
@@ -194,7 +195,7 @@ function navActive($page, $activePage) {
             </div>
             <div class="col-md-4">
                 <h6>Connect With Us</h6>
-                <p class="mb-1">📍 George's Valley, Manchester, Jamaica</p>
+                <p class="mb-1">ðŸ“ George's Valley, Manchester, Jamaica</p>
                 <p>Email: info@876jadigital.com</p>
             </div>
         </div>

@@ -1,10 +1,10 @@
-<?php
+﻿<?php
 /*
 Resource Catalog - 876JA Digital Online Teaching Resources
 Public page for browsing IT learning resources by course category.
 */
 
-// Public page — visitors can browse, logged-in members get download access.
+// Public page â€” visitors can browse, logged-in members get download access.
 session_start();
 $isLoggedIn = isset($_SESSION['user_id']);
 
@@ -30,7 +30,7 @@ try {
     $stmt = $pdo->query('SELECT id, title, course, type, level FROM resources ORDER BY course, level');
     $resources = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    // Silently fall back to empty list — page still renders.
+    // Silently fall back to empty list â€” page still renders.
     $resources = [];
 }
 
@@ -67,8 +67,9 @@ $levelBadge = [
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="assets/css/styles.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/css/images/876Logo.png">
     <style>
-        /* ── Catalog-specific styles (extends styles.css) ── */
+        /* â”€â”€ Catalog-specific styles (extends styles.css) â”€â”€ */
 
         .catalog-filter-bar {
             background: rgba(255,255,255,0.82);
@@ -142,7 +143,7 @@ $levelBadge = [
 </head>
 <body>
 
-<!-- ── Navigation ── -->
+<!-- â”€â”€ Navigation â”€â”€ -->
 <nav class="navbar navbar-expand-lg navbar-dark site-navbar sticky-top shadow-sm">
     <div class="container">
         <a class="navbar-brand" href="index.php">876JA Digital Resources</a>
@@ -168,17 +169,17 @@ $levelBadge = [
     </div>
 </nav>
 
-<!-- ── Page Banner ── -->
+<!-- â”€â”€ Page Banner â”€â”€ -->
 <section class="page-banner">
     <div class="container">
         <h1>Resource Catalog</h1>
-        <p class="mb-0 mt-2 opacity-75">Browse IT course materials by category — notes, tutorials, and more.</p>
+        <p class="mb-0 mt-2 opacity-75">Browse IT course materials by category â€” notes, tutorials, and more.</p>
     </div>
 </section>
 
 <div class="container pb-5">
 
-    <!-- ── Search & Filter Bar ── -->
+    <!-- â”€â”€ Search & Filter Bar â”€â”€ -->
     <div class="catalog-filter-bar mb-5">
         <div class="row g-3 align-items-end">
             <div class="col-md-5">
@@ -186,7 +187,7 @@ $levelBadge = [
                 <div class="input-group">
                     <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
                     <input type="text" id="searchInput" class="form-control border-start-0 ps-0"
-                           placeholder="e.g. C++, HTML, SQL…" autocomplete="off">
+                           placeholder="e.g. C++, HTML, SQLâ€¦" autocomplete="off">
                 </div>
             </div>
             <div class="col-md-3">
@@ -217,7 +218,7 @@ $levelBadge = [
         </div>
     </div>
 
-    <!-- ── Course Categories ── -->
+    <!-- â”€â”€ Course Categories â”€â”€ -->
     <h2 class="section-title mb-1">Browse by Course</h2>
     <p class="text-muted mb-4">Click a category to filter the resource list below.</p>
 
@@ -241,7 +242,7 @@ $levelBadge = [
         <?php endforeach; ?>
     </div>
 
-    <!-- ── Resource Table ── -->
+    <!-- â”€â”€ Resource Table â”€â”€ -->
     <h2 class="section-title mb-1">All Resources</h2>
     <p class="text-muted mb-4" id="resourceCount">
         Showing <?php echo count($resources); ?> resource<?php echo count($resources) !== 1 ? 's' : ''; ?>
@@ -306,7 +307,7 @@ $levelBadge = [
         <p class="mt-3 text-muted">No resources match your search. Try a different filter or keyword.</p>
     </div>
 
-    <!-- ── Members CTA (only shown to guests) ── -->
+    <!-- â”€â”€ Members CTA (only shown to guests) â”€â”€ -->
     <?php if (!$isLoggedIn): ?>
     <div class="cta-box mt-5 text-center">
         <h4 class="fw-bold mb-2">Want full access to all resources?</h4>
@@ -318,7 +319,7 @@ $levelBadge = [
 
 </div>
 
-<!-- ── Footer ── -->
+<!-- â”€â”€ Footer â”€â”€ -->
 <footer class="footer-area">
     <div class="container">
         <div class="row g-4">
@@ -344,7 +345,7 @@ $levelBadge = [
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// ── Live filter logic ──
+// â”€â”€ Live filter logic â”€â”€
 const searchInput   = document.getElementById('searchInput');
 const filterCourse  = document.getElementById('filterCourse');
 const filterLevel   = document.getElementById('filterLevel');
@@ -378,7 +379,7 @@ function applyFilters() {
     noResults.classList.toggle('d-none', visible > 0);
 }
 
-// Category card click → set course filter
+// Category card click â†’ set course filter
 catCards.forEach(card => {
     card.addEventListener('click', () => {
         const selected = card.dataset.category;
